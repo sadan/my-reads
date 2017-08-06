@@ -21,18 +21,45 @@ class BooksApp extends Component {
           read: myBooks.filter((book) => book.shelf === "read")
         })
       })
+      .catch(res => {
+        console.log(res)
+      })
   }
 
   addToShelf = (e, book) => {
     switch (e.target.value) {
       case "currentlyReading":
+        book.shelf = e.target.value
         this.setState(state => (
           state.currentlyReading.push(book)
         ))
-        BooksAPI.update(book, e.target.value).then(res => (
-          console.log(res)
+        BooksAPI.update(book, e.target.value)
+          .then(res => (
+            console.log(res)
+          ))
+        break
+      case "wantToRead":
+        book.shelf = e.target.value
+        this.setState(state => (
+          state.wantToRead.push(book)
         ))
-        break;
+        BooksAPI.update(book, e.target.value)
+          .then(res => (
+            console.log(res)
+          ))
+        break
+      case "read":
+        book.shelf = e.target.value
+        this.setState(state => (
+          state.read.push(book)
+        ))
+        BooksAPI.update(book, e.target.value)
+          .then(res => (
+            console.log(res)
+          ))
+        break
+      default:
+        break
     }
   }
 
@@ -63,4 +90,4 @@ class BooksApp extends Component {
   }
 }
 
-export default BooksApp
+export default BooksApp;
