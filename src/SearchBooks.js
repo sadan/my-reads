@@ -5,7 +5,8 @@ import * as BooksAPI from './BooksAPI';
 class SearchBooks extends Component {
   state = {
     query: '',
-    books: []
+    books: [],
+    value: "none"
   }
 
   updateQuery = (query) => {
@@ -19,6 +20,8 @@ class SearchBooks extends Component {
   }
 
   render() {
+    const { addToShelf } = this.props;
+    
       return (
         <div className="search-books">
           <div className="search-books-bar">
@@ -46,7 +49,7 @@ class SearchBooks extends Component {
                       <div className="book-cover" 
                         style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                       <div className="book-shelf-changer">
-                        <select>
+                        <select value={this.state.value} onChange={(event) => addToShelf(event, book)}>
                           <option value="none" disabled>Move to...</option>
                           <option value="currentlyReading">Currently Reading</option>
                           <option value="wantToRead">Want to Read</option>
@@ -57,8 +60,8 @@ class SearchBooks extends Component {
                     </div>
                     <div className="book-title">{book.title}</div>
                     {book.authors && (
-                      book.authors.map(author => (
-                        <div className="book-authors">{author}</div>
+                      book.authors.map((author, index) => (
+                        <div key={index} className="book-authors">{author}</div>
                       ))
                     )}
                   </div>
@@ -71,4 +74,4 @@ class SearchBooks extends Component {
   }
 }
 
-export default SearchBooks;   
+export default SearchBooks;
