@@ -3,7 +3,7 @@ import * as BooksAPI from './utils/BooksAPI'
 
 class Book extends Component {
   state = {
-    shelf: ""
+    shelf: "none"
   }
 
   componentDidMount = () => {
@@ -11,11 +11,14 @@ class Book extends Component {
     if (!book.shelf) {
       BooksAPI.get(book.id)
         .then((book) => {
-          console.log(book.shelf)
-          this.setState({ shelf: book.shelf })  
+          this.setState((state) => ({
+            shelf: book.shelf
+          }))  
         })
     } else {
-      this.setState({ shelf: book.shelf })
+      this.setState((state) => ({
+        shelf: book.shelf
+      }))
     }
   }
 

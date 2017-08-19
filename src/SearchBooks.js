@@ -14,23 +14,14 @@ class SearchBooks extends Component {
     this.setState({ query: query.trim() });
     if (query) {
       BooksAPI.search(query)
-      .catch((res) => {
-        console.log(res)
-      })
-      .then((books) => {
-        this.setState({ books: books })
+      .then(books => {
+        if (books.length) {
+          this.setState({ books: books })
+        } else {
+          console.log("No results found.")
+        }
       })
     }
-  }
-
-  getBookStatus = (bookId) => {
-    BooksAPI.get(bookId)
-    .then((book) => {
-      // console.log(book)
-      var value = book.shelf
-      console.log(value)
-      return value
-    })
   }
 
   render() {
