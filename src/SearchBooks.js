@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import * as BooksAPI from './BooksAPI';
+import * as BooksAPI from './utils/BooksAPI';
+import Book from './Book'
 
 class SearchBooks extends Component {
   state = {
@@ -13,10 +14,23 @@ class SearchBooks extends Component {
     this.setState({ query: query.trim() });
     if (query) {
       BooksAPI.search(query)
+      .catch((res) => {
+        console.log(res)
+      })
       .then((books) => {
         this.setState({ books: books })
       })
     }
+  }
+
+  getBookStatus = (bookId) => {
+    BooksAPI.get(bookId)
+    .then((book) => {
+      // console.log(book)
+      var value = book.shelf
+      console.log(value)
+      return value
+    })
   }
 
   render() {
@@ -43,31 +57,10 @@ class SearchBooks extends Component {
           <div className="search-books-results">
             <ol className="books-grid">
               {this.state.books.map((book) => (
-                <li key={book.id}>
-                  <div className="book">
-                    <div className="book-top">
-                      {book.imageLinks && (
-                        <div className="book-cover" 
-                        style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
-                      )}
-                      <div className="book-shelf-changer">
-                        <select value={this.state.value} onChange={(event) => addToShelf(event, book)}>
-                          <option value="none" disabled>Move to...</option>
-                          <option value="currentlyReading">Currently Reading</option>
-                          <option value="wantToRead">Want to Read</option>
-                          <option value="read">Read</option>
-                          <option value="none">None</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="book-title">{book.title}</div>
-                    {book.authors && (
-                      book.authors.map((author, index) => (
-                        <div key={index} className="book-authors">{author}</div>
-                      ))
-                    )}
-                  </div>
-                </li>
+                <Book 
+                  key={book.id} 
+                  book={book}
+                  addToShelf={addToShelf} />
               ))}
             </ol>
           </div>

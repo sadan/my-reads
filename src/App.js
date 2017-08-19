@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
 import SearchBooks from './SearchBooks';
 import BookShelf from './BookShelf';
-import * as BooksAPI from './BooksAPI';
+import * as BooksAPI from './utils/BooksAPI';
 import './App.css';
 
 class BooksApp extends Component {
@@ -72,9 +72,18 @@ class BooksApp extends Component {
               <h1>MyReads</h1>
             </div>
             <div className="list-books-content">
-              <BookShelf title={"Currently Reading"} books={this.state.currentlyReading}/>
-              <BookShelf title={"Want to Read"} books={this.state.wantToRead}/>
-              <BookShelf title={"Read"} books={this.state.read}/>
+              <BookShelf 
+                title={"Currently Reading"} 
+                books={this.state.currentlyReading}
+                addToShelf={this.addToShelf} />
+              <BookShelf 
+                title={"Want to Read"} 
+                books={this.state.wantToRead}
+                addToShelf={this.addToShelf} />
+              <BookShelf 
+                title={"Read"} 
+                books={this.state.read}
+                addToShelf={this.addToShelf} />
             </div>
             <div className="open-search">
               <Link to="/search">Add a book</Link>
