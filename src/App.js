@@ -7,62 +7,35 @@ import './App.css';
 
 class BooksApp extends Component {
   state = {
-    currentlyReading: [],
-    wantToRead: [],
-    read: []
+    myBooks: []
   };
 
   componentDidMount = () => {
     BooksAPI.getAll()
       .then((myBooks) => {
-        this.setState({
-          currentlyReading: myBooks.filter((book) => book.shelf === "currentlyReading"),
-          wantToRead: myBooks.filter((book) => book.shelf === "wantToRead"),
-          read: myBooks.filter((book) => book.shelf === "read")
-        })
-      })
-      .catch(res => {
-        console.log(res)
-      })
-  };
-
-  removeFromShelfHandler = (book, shelf) => {
-    this.setState(state => {
-      state[shelf] = state[shelf].filter(b => b.id !== book.id)
-    });
-  };
-
-  addToShelfHandler = (book, shelf) => {
-    book.shelf = shelf;
-    this.setState(state => (
-      state[shelf] = state[shelf].concat([ book ])
-    ));
-    BooksAPI.update(book, shelf);
+        this.setState({ myBooks })
+      });
   };
 
   addToShelf = (e, book) => {
-    switch (e.target.value) {
-      case "currentlyReading":
-        this.addToShelfHandler(book, e.target.value)
-        this.removeFromShelfHandler(book, "wantToRead")
-        this.removeFromShelfHandler(book, "read")
-        break
-      case "wantToRead":
-        this.addToShelfHandler(book, e.target.value)
-        this.removeFromShelfHandler(book, "read")
-        this.removeFromShelfHandler(book, "currentlyReading")
-        break
-      case "read":
-        this.addToShelfHandler(book, e.target.value)
-        this.removeFromShelfHandler(book, "currentlyReading")
-        this.removeFromShelfHandler(book, "wantToRead")
-        break
-      default:
-        break
-    };
+    let shelf = e.target.value;
+    if (book.shelf !== shelf) {
+      BooksAPI.update(book, shelf)
+        .then(() => {
+          book.shelf = shelf;
+          this.setState(state => ({
+            myBooks: state.myBooks.filter(b => b.id !== book.id).concat([ book ])
+          }))
+        })
+    }
   };
 
   render() {
+    const { myBooks } = this.state;
+
+    const wantToRead = myBooks.filter(book => book.shelf === 'wantToRead');
+    const currentlyReading = myBooks.filter(book => book.shelf === 'currentlyReading');
+    const read = myBooks.filter(book => book.shelf === 'read');
     return (
       <div className="app">
         <Route exact path="/" render={() => (
@@ -73,15 +46,15 @@ class BooksApp extends Component {
             <div className="list-books-content">
               <BookShelf 
                 title={"Currently Reading"} 
-                books={this.state.currentlyReading}
+                books={currentlyReading}
                 addToShelf={this.addToShelf} />
               <BookShelf 
                 title={"Want to Read"} 
-                books={this.state.wantToRead}
+                books={wantToRead}
                 addToShelf={this.addToShelf} />
               <BookShelf 
                 title={"Read"} 
-                books={this.state.read}
+                books={read}
                 addToShelf={this.addToShelf} />
             </div>
             <div className="open-search">
@@ -91,7 +64,8 @@ class BooksApp extends Component {
         )} />
         <Route path="/search" render={() => (
           <SearchBooks
-            addToShelf={this.addToShelf} />
+            addToShelf={this.addToShelf}
+            myBooks={myBooks} />
         )} />
       </div>
     );
