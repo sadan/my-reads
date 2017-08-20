@@ -26,10 +26,16 @@ class BooksApp extends Component {
       })
   }
 
+  removeFromShelfHandler = (book, shelf) => {
+    this.setState(state => {
+      state[shelf] = state[shelf].filter(b => b.id !== book.id)
+    })
+  }
+
   addToShelfHandler = (book, shelf) => {
     book.shelf = shelf
     this.setState(state => (
-      state[shelf].push(book)
+      state[shelf] = state[shelf].concat([ book ])
     ))
     BooksAPI.update(book, shelf)
   }
@@ -38,12 +44,18 @@ class BooksApp extends Component {
     switch (e.target.value) {
       case "currentlyReading":
         this.addToShelfHandler(book, e.target.value)
+        this.removeFromShelfHandler(book, "wantToRead")
+        this.removeFromShelfHandler(book, "read")
         break
       case "wantToRead":
         this.addToShelfHandler(book, e.target.value)
+        this.removeFromShelfHandler(book, "read")
+        this.removeFromShelfHandler(book, "currentlyReading")
         break
       case "read":
         this.addToShelfHandler(book, e.target.value)
+        this.removeFromShelfHandler(book, "currentlyReading")
+        this.removeFromShelfHandler(book, "wantToRead")
         break
       default:
         break
