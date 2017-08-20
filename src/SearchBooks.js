@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import * as BooksAPI from './utils/BooksAPI';
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import * as BooksAPI from './utils/BooksAPI'
 import Book from './Book'
 
 class SearchBooks extends Component {
@@ -25,7 +25,7 @@ class SearchBooks extends Component {
   }
 
   render() {
-    const { addToShelf } = this.props;
+    const { addToShelf } = this.props
     
       return (
         <div className="search-books">
@@ -60,4 +60,4 @@ class SearchBooks extends Component {
   }
 }
 
-export default SearchBooks;
+export default SearchBooks

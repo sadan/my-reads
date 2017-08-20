@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { Route, Link } from 'react-router-dom';
-import SearchBooks from './SearchBooks';
-import BookShelf from './BookShelf';
-import * as BooksAPI from './utils/BooksAPI';
-import './App.css';
+import React, { Component } from 'react'
+import { Route, Link } from 'react-router-dom'
+import SearchBooks from './SearchBooks'
+import BookShelf from './BookShelf'
+import * as BooksAPI from './utils/BooksAPI'
+import './App.css'
 
 class BooksApp extends Component {
   state = {
@@ -26,37 +26,24 @@ class BooksApp extends Component {
       })
   }
 
+  addToShelfHandler = (book, shelf) => {
+    book.shelf = shelf
+    this.setState(state => (
+      state[shelf].push(book)
+    ))
+    BooksAPI.update(book, shelf)
+  }
+
   addToShelf = (e, book) => {
     switch (e.target.value) {
       case "currentlyReading":
-        book.shelf = e.target.value
-        this.setState(state => (
-          state.currentlyReading.push(book)
-        ))
-        BooksAPI.update(book, e.target.value)
-          .then(res => (
-            console.log(res)
-          ))
+        this.addToShelfHandler(book, e.target.value)
         break
       case "wantToRead":
-        book.shelf = e.target.value
-        this.setState(state => (
-          state.wantToRead.push(book)
-        ))
-        BooksAPI.update(book, e.target.value)
-          .then(res => (
-            console.log(res)
-          ))
+        this.addToShelfHandler(book, e.target.value)
         break
       case "read":
-        book.shelf = e.target.value
-        this.setState(state => (
-          state.read.push(book)
-        ))
-        BooksAPI.update(book, e.target.value)
-          .then(res => (
-            console.log(res)
-          ))
+        this.addToShelfHandler(book, e.target.value)
         break
       default:
         break
@@ -99,4 +86,4 @@ class BooksApp extends Component {
   }
 }
 
-export default BooksApp;
+export default BooksApp
