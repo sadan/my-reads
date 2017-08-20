@@ -1,14 +1,14 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
-import * as BooksAPI from '../utils/BooksAPI'
-import Book from './Book'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import * as BooksAPI from '../utils/BooksAPI';
+import Book from './Book';
 
 class SearchBooks extends Component {
   state = {
     query: '',
     books: [],
     value: "none"
-  }
+  };
 
   updateQuery = (query) => {
     this.setState({ query: query.trim() });
@@ -19,13 +19,13 @@ class SearchBooks extends Component {
           this.setState({ books: books })
         } else {
           console.log("No results found.")
-        }
+        };
       })
-    }
-  }
+    };
+  };
 
   render() {
-    const { addToShelf } = this.props
+    const { addToShelf } = this.props;
     
       return (
         <div className="search-books">
@@ -56,8 +56,8 @@ class SearchBooks extends Component {
             </ol>
           </div>
         </div>
-      )
+      );
   }
 }
 
-export default SearchBooks
+export default SearchBooks;

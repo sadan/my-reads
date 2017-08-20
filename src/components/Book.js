@@ -1,13 +1,13 @@
-import React, { Component } from 'react'
-import * as BooksAPI from '../utils/BooksAPI'
+import React, { Component } from 'react';
+import * as BooksAPI from '../utils/BooksAPI';
 
 class Book extends Component {
   state = {
     shelf: "none"
-  }
+  };
 
   componentDidMount = () => {
-    var book = this.props.book
+    var book = this.props.book;
     if (!book.shelf) {
       BooksAPI.get(book.id)
         .then((book) => {
@@ -19,11 +19,11 @@ class Book extends Component {
       this.setState((state) => ({
         shelf: book.shelf
       }))
-    }
-  }
+    };
+  };
 
   render() {
-    const { book, addToShelf } = this.props
+    const { book, addToShelf } = this.props;
     return (
       <li>
         <div className="book">
@@ -52,8 +52,8 @@ class Book extends Component {
           )}
         </div>
       </li>
-    )
+    );
   }
 }
 
-export default Book
+export default Book;

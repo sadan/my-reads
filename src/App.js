@@ -1,16 +1,16 @@
-import React, { Component } from 'react'
-import { Route, Link } from 'react-router-dom'
-import SearchBooks from './components/SearchBooks'
-import BookShelf from './components/BookShelf'
-import * as BooksAPI from './utils/BooksAPI'
-import './App.css'
+import React, { Component } from 'react';
+import { Route, Link } from 'react-router-dom';
+import SearchBooks from './components/SearchBooks';
+import BookShelf from './components/BookShelf';
+import * as BooksAPI from './utils/BooksAPI';
+import './App.css';
 
 class BooksApp extends Component {
   state = {
     currentlyReading: [],
     wantToRead: [],
     read: []
-  }
+  };
 
   componentDidMount = () => {
     BooksAPI.getAll()
@@ -24,21 +24,21 @@ class BooksApp extends Component {
       .catch(res => {
         console.log(res)
       })
-  }
+  };
 
   removeFromShelfHandler = (book, shelf) => {
     this.setState(state => {
       state[shelf] = state[shelf].filter(b => b.id !== book.id)
-    })
-  }
+    });
+  };
 
   addToShelfHandler = (book, shelf) => {
-    book.shelf = shelf
+    book.shelf = shelf;
     this.setState(state => (
       state[shelf] = state[shelf].concat([ book ])
-    ))
-    BooksAPI.update(book, shelf)
-  }
+    ));
+    BooksAPI.update(book, shelf);
+  };
 
   addToShelf = (e, book) => {
     switch (e.target.value) {
@@ -59,8 +59,8 @@ class BooksApp extends Component {
         break
       default:
         break
-    }
-  }
+    };
+  };
 
   render() {
     return (
@@ -94,8 +94,8 @@ class BooksApp extends Component {
             addToShelf={this.addToShelf} />
         )} />
       </div>
-    )
+    );
   }
 }
 
-export default BooksApp
+export default BooksApp;
