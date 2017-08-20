@@ -18,7 +18,7 @@ class BooksApp extends Component {
   };
 
   addToShelf = (e, book) => {
-    var shelf = e.target.value;
+    let shelf = e.target.value;
     if (book.shelf !== shelf) {
       BooksAPI.update(book, shelf)
         .then(() => {
@@ -64,7 +64,8 @@ class BooksApp extends Component {
         )} />
         <Route path="/search" render={() => (
           <SearchBooks
-            addToShelf={this.addToShelf} />
+            addToShelf={this.addToShelf}
+            myBooks={myBooks} />
         )} />
       </div>
     );
